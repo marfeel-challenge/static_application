@@ -1,0 +1,103 @@
+# Default values for my-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+helm-static_application:
+  nameOverride: "static-application"
+  fullnameOverride: "static-application"
+  #proyecto: filenet-back-dev
+  replicaCount: 1
+  image:
+    repository: registry.access.redhat.com/ubi8/nginx-120
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "1-84"
+    port:
+      name: "http"
+      containerPort: "8080"
+      protocol: "TCP"
+  command: [
+    "nginx",
+    "-g",
+    "daemon off;"
+  ]
+  commonlabels:
+    application_name: app1
+    router: "prd"
+    environment: "prd"
+    cluster: "prd"
+  deploymentlabels:
+    deploylabel: "deploylabel"
+  livenessProbe:
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 10
+    failureThreshold: 10
+    initialDelaySeconds: 60
+    httpGet:
+      path: /
+      port: 8080
+  readinessProbe:
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 10
+    failureThreshold: 3
+    initialDelaySeconds: 60
+    httpGet:
+      path: /
+      port: 8080
+      #imagePullSecrets: []
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  # fsGroup: 2000
+
+  securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+  service:
+    type: LoadBalancer
+    port: 80
+    targetPort: 8080
+    protocol: "TCP"
+    name: "http"
+    nodePort: 30080
+  ingress:
+    enabled: false
+  # insecureEdgeTerminationPolicy: "Redirect"
+  resources:
+    limits:
+      cpu: 1
+      memory: 1024Mi
+    requests:
+      cpu: 10m
+      memory: 128Mi
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  servicemonitor:
+    enabled: false
+    labels:
+      servicemonitor: "servicemonitor"
+    endpoints:
+      interval: 60s
+      port: 8081-tcp
+      scheme: http
+      path: /management/metrics

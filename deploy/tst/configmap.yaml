@@ -8,5 +8,5 @@ helm-static_application:
       path: /opt/app-root/src
       nameFile: index.html
       data: |
-        holis estoy en dev
+        holis estoy en prod
 
