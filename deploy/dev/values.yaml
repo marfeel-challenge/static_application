@@ -15,6 +15,11 @@ helm-static_application:
       name: "http"
       containerPort: "8080"
       protocol: "TCP"
+  command: [
+    "nginx",
+    "-g",
+    "daemon off;"
+  ]
   commonlabels:
     application_name: app1
     router: "dev"
