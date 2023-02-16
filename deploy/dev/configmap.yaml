@@ -5,7 +5,7 @@ helm-static_application:
   configmapToFileEnabled: true
   configmapToFile:
     - name: index
-      path: /usr/share/nginx/html/
+      path: /opt/app-root/src
       nameFile: index.html
       data: |
         holis
