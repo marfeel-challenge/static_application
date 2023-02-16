@@ -7,10 +7,10 @@ helm-static_application:
   #proyecto: filenet-back-dev
   replicaCount: 1
   image:
-    repository: nginx
+    repository: registry.access.redhat.com/ubi8/nginx-120
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "latest"
+    tag: "1-84"
     port:
       name: "http"
       containerPort: "8080"
