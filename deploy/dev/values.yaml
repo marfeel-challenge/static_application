@@ -71,7 +71,7 @@ helm-static_application:
   # runAsUser: 1000
 
   service:
-    type: loadBalancer
+    type: LoadBalancer
     port: 8080
     targetPort: 8080
     protocol: "TCP"
