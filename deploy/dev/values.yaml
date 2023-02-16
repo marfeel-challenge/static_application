@@ -2,35 +2,26 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 helm-static_application:
-  nameOverride: "gestor-documental"
-  fullnameOverride: "gestor-documental"
-  proyecto: filenet-back-dev
+  nameOverride: "static-application"
+  fullnameOverride: "static-application"
+  #proyecto: filenet-back-dev
   replicaCount: 1
   image:
-    repository: quay.io/santalucia/sl-contratacion-filenet-back-gestor-documental
+    repository: nginx
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "2.0.3-snapshot"
+    tag: "latest"
     port:
       name: "http"
       containerPort: "8080"
       protocol: "TCP"
   commonlabels:
-    application_name: #nombre de la aplicacion
-    business_unit: #Unidad de negocio
-    clientcostowner: #cliente
-    owner: #jefe de proyecto
-    cost_assignment: #directo/indirecto
-    cost_center: "ceco"
-    gestion_presupuesto: #pdtd /bau
-    service_type: #infra, shared, app
+    application_name: app1
     router: "dev"
     environment: "dev"
     cluster: "dev"
   deploymentlabels:
     deploylabel: "deploylabel"
-  imagePullSecrets:
-    - name: "santalucia-cicd-pull-secret"
   livenessProbe:
     periodSeconds: 10
     successThreshold: 1
@@ -38,8 +29,8 @@ helm-static_application:
     failureThreshold: 10
     initialDelaySeconds: 60
     httpGet:
-      path: /management/health/liveness
-      port: 8081
+      path: /
+      port: 8080
   readinessProbe:
     periodSeconds: 10
     successThreshold: 1
@@ -47,8 +38,8 @@ helm-static_application:
     failureThreshold: 3
     initialDelaySeconds: 60
     httpGet:
-      path: /management/health/readiness
-      port: 8081
+      path: /
+      port: 8080
       #imagePullSecrets: []
   serviceAccount:
     # Specifies whether a service account should be created

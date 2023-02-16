@@ -1,0 +1,16 @@
+# Default values for my-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+helm-static_application:
+  configmapToFileEnabled: true
+  configmapToFile:
+    - name: application
+      path: /deployments/config
+      nameFile: application.yaml
+      data: |
+        #Reference de propiedades
+        #https://docs.spring.io/spring-boot/docs/2.3.9.RELEASE/reference/html/appendix-application-properties.html#common-application-properties
+        #Multitenant https://docs.spring.io/spring-security/site/docs/current/reference/html5/#resolving-the-tenant-by-claim
+        #https://docs.spring.io/spring-security/site/docs/current/reference/html5/#oauth2resourceserver-opaque-minimalconfiguration
+        #https://docs.spring.io/spring-security/site/docs/current/reference/html5/#bearer-token-propagation
+
