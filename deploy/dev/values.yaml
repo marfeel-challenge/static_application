@@ -1,0 +1,107 @@
+# Default values for my-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+helm-static_application:
+  nameOverride: "gestor-documental"
+  fullnameOverride: "gestor-documental"
+  proyecto: filenet-back-dev
+  replicaCount: 1
+  image:
+    repository: quay.io/santalucia/sl-contratacion-filenet-back-gestor-documental
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "2.0.3-snapshot"
+    port:
+      name: "http"
+      containerPort: "8080"
+      protocol: "TCP"
+  commonlabels:
+    application_name: #nombre de la aplicacion
+    business_unit: #Unidad de negocio
+    clientcostowner: #cliente
+    owner: #jefe de proyecto
+    cost_assignment: #directo/indirecto
+    cost_center: "ceco"
+    gestion_presupuesto: #pdtd /bau
+    service_type: #infra, shared, app
+    router: "dev"
+    environment: "dev"
+    cluster: "dev"
+  deploymentlabels:
+    deploylabel: "deploylabel"
+  imagePullSecrets:
+    - name: "santalucia-cicd-pull-secret"
+  livenessProbe:
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 10
+    failureThreshold: 10
+    initialDelaySeconds: 60
+    httpGet:
+      path: /management/health/liveness
+      port: 8081
+  readinessProbe:
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 10
+    failureThreshold: 3
+    initialDelaySeconds: 60
+    httpGet:
+      path: /management/health/readiness
+      port: 8081
+      #imagePullSecrets: []
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  # fsGroup: 2000
+
+  securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+  service:
+    type: loadBalancer
+    port: 8080
+    targetPort: 8080
+    protocol: "TCP"
+    name: "http"
+    nodePort: 30080
+  ingress:
+    enabled: false
+  # insecureEdgeTerminationPolicy: "Redirect"
+  resources:
+    limits:
+      cpu: 1
+      memory: 1024Mi
+    requests:
+      cpu: 10m
+      memory: 128Mi
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  servicemonitor:
+    enabled: false
+    labels:
+      servicemonitor: "servicemonitor"
+    endpoints:
+      interval: 60s
+      port: 8081-tcp
+      scheme: http
+      path: /management/metrics
