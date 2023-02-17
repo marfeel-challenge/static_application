@@ -22,9 +22,9 @@ helm-static_application:
   ]
   commonlabels:
     application_name: app1
-    router: "dev"
-    environment: "dev"
-    cluster: "dev"
+    router: "prd"
+    environment: "prd"
+    cluster: "prd"
   deploymentlabels:
     deploylabel: "deploylabel"
   livenessProbe:

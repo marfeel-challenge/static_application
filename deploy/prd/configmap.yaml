@@ -1,0 +1,12 @@
+# Default values for my-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+helm-static_application:
+  configmapToFileEnabled: true
+  configmapToFile:
+    - name: index
+      path: /opt/app-root/src
+      nameFile: index.html
+      data: |
+        holis estoy en tst
+
